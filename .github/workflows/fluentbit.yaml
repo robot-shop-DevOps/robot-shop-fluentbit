@@ -11,7 +11,7 @@ on:
 env:
   NAMESPACE: fluentbit
   FLUENTBIT_HELM_CHART_URL: https://fluent.github.io/helm-charts
-  CHART_PATH: ./chart
+  CHART_PATH: ./.chart
 
 jobs:
   validate:
@@ -27,8 +27,6 @@ jobs:
 
       - name: Validate helm charts
         run: |
-          pwd
-          ls -la
           cd ${{ env.CHART_PATH }}
           helm lint 
 
