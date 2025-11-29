@@ -1,0 +1,17 @@
+image:
+  repository: robotshopdevacr.azurecr.io/baseimages/fluent/fluent-bit
+  tag: 4.1.0-internal
+  pullPolicy: Always
+
+config:
+  inputs: |
+    pipeline:
+      inputs:
+        - name: tail
+          path: /var/log/containers/*.log
+          tag: robotshop.<namespace_name>.<pod_name>.<container_name>
+          tag_regex: '(?<pod_name>[^_]+)_(?<namespace_name>[^_]+)_(?<container_name>[^-]+)-(?<container_id>[a-z0-9]{64})\.log$'
+
+      filters:
+        - name: kubernetes
+          match: robotshop.*
