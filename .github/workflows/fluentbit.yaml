@@ -27,6 +27,8 @@ jobs:
 
       - name: Validate helm charts
         run: |
+          pwd
+          ls -la
           cd ${{ env.CHART_PATH }}
           helm lint 
 
