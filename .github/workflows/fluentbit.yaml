@@ -6,12 +6,12 @@ on:
       FLUENTBIT_HELM_CHART_VERSION:
         description: "The version of the Fluentbit to install"
         required: true
-        default: "1.46.1"
+        default: "0.54.0"
 
 env:
   NAMESPACE: fluentbit
   FLUENTBIT_HELM_CHART_URL: https://fluent.github.io/helm-charts
-  CHART_PATH: ./chart
+  CHART_PATH: ./.chart
 
 jobs:
   validate:
