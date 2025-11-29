@@ -9,9 +9,12 @@ config:
       inputs:
         - name: tail
           path: /var/log/containers/*.log
+          parser: cri
           tag: robotshop.<namespace_name>.<pod_name>.<container_name>
           tag_regex: '(?<pod_name>[^_]+)_(?<namespace_name>[^_]+)_(?<container_name>[^-]+)-(?<container_id>[a-z0-9]{64})\.log$'
 
+  filters: |
+    pipeline:
       filters:
         - name: kubernetes
           match: robotshop.*
