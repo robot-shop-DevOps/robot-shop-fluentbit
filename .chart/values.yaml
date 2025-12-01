@@ -29,21 +29,21 @@ config:
         Name       tail
         Path       /var/log/containers/*.log
         Parser     cri
-        Tag        robotshop.${namespace_name}.${pod_name}.${container_name}
-        Tag_Regex  (?<pod_name>[^_]+)_(?<namespace_name>[^_]+)_(?<container_name>[^-]+)-(?<container_id>[a-z0-9]{64})\.log$
+        Tag        kube.var.log.containers.*
 
   filters: |
     [FILTER]
         Name   kubernetes
-        Match  robotshop.*
+        Match  kube.var.log.containers.*
 
   outputs: |
     [OUTPUT]
-        Name         es
-        Match        robotshop.*
-        Host         10.0.2.10
-        Port         9200
-        HTTP_User    ${ES_USER}
-        HTTP_Passwd  ${ES_PASS}
-        tls          on
-        tls.verify   off
+        Name                es
+        Match               *
+        Host                10.0.2.10
+        Port                9200
+        HTTP_User           ${ES_USER}
+        HTTP_Passwd         ${ES_PASS}
+        tls                 on
+        tls.verify          off
+        Suppress_Type_Name  On 
