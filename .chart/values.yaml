@@ -18,32 +18,31 @@ env:
 
 config:
   service: |
-    flush: 1
-    daemon: off
-    log_level: info
+    [SERVICE]
+        Flush         1
+        Daemon        Off
+        Log_Level     info
+        Parsers_File  parsers.conf
 
   inputs: |
-    pipeline:
-      inputs:
-        - name: tail
-          path: /var/log/containers/*.log
-          parser: cri
-          tag: robotshop.<namespace_name>.<pod_name>.<container_name>
-          tag_regex: '(?<pod_name>[^_]+)_(?<namespace_name>[^_]+)_(?<container_name>[^-]+)-(?<container_id>[a-z0-9]{64})\.log$'
+    [INPUT]
+        Name       tail
+        Path       /var/log/containers/*.log
+        Parser     cri
+        Tag        robotshop.${namespace_name}.${pod_name}.${container_name}
+        Tag_Regex  (?<pod_name>[^_]+)_(?<namespace_name>[^_]+)_(?<container_name>[^-]+)-(?<container_id>[a-z0-9]{64})\.log$
 
   filters: |
-    pipeline:
-      filters:
-        - name: kubernetes
-          match: robotshop.*
+    [FILTER]
+        Name   kubernetes
+        Match  robotshop.*
 
   outputs: |
-    pipeline:
-      outputs:
-        - name: es
-          match: robotshop.*
-          host: 10.0.2.10
-          port: 9200
-          http_user: ${ES_USER}
-          http_password: ${ES_PASS}
-          tls: off
+    [OUTPUT]
+        Name         es
+        Match        robotshop.*
+        Host         10.0.2.10
+        Port         9200
+        HTTP_User    ${ES_USER}
+        HTTP_Passwd  ${ES_PASS}
+        tls          Off
