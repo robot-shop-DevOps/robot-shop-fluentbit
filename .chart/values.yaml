@@ -44,7 +44,7 @@ config:
     [FILTER]
         Name          parser
         Match         kube.var.log.containers.*
-        Key_Name      log
+        Key_Name      message
         Parser        json
         Reserve_Data  On
         Preserve_Key  On
