@@ -3,7 +3,25 @@ image:
   tag: 4.1.0-internal
   pullPolicy: Always
 
+env:
+  - name: ES_USER
+    valueFrom:
+      secretKeyRef:
+        name: elasticsearch
+        key: ES_USER
+
+  - name: ES_PASS
+    valueFrom:
+      secretKeyRef:
+        name: elasticsearch
+        key: ES_PASS
+
 config:
+  service: |
+    flush: 1
+    daemon: off
+    log_level: info
+
   inputs: |
     pipeline:
       inputs:
@@ -18,3 +36,14 @@ config:
       filters:
         - name: kubernetes
           match: robotshop.*
+
+  outputs: |
+    pipeline:
+      outputs:
+        - name: es
+          match: robotshop.*
+          host: 10.0.2.10
+          port: 9200
+          http_user: ${ES_USER}
+          http_password: ${ES_PASS}
+          tls: off
