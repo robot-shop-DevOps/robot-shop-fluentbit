@@ -45,4 +45,5 @@ config:
         Port         9200
         HTTP_User    ${ES_USER}
         HTTP_Passwd  ${ES_PASS}
-        tls          Off
+        tls          on
+        tls.verify   off
