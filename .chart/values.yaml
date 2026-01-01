@@ -36,13 +36,17 @@ config:
 
   filters: |
     [FILTER]
+        Name             parser
+        Match            kube.*
+        Key_Name         message
+        Parser           json
+        Preserve_Key     Off
+        Reserve_Data     On
+
+    [FILTER]
         Name             kubernetes
         Match            kube.*
         Kube_Tag_Prefix  kube.var.log.containers.
-        Merge_Log_Key    message
-        Merge_Log        On
-        Merge_Parser     json
-        Keep_Log         Off
 
   outputs: |
     [OUTPUT]
