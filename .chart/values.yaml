@@ -40,7 +40,8 @@ config:
         Match            kube.*
         Key_Name         log
         Parser           json
-        Remove_Key_Name  On
+        Preserve_Key     Off
+        Reserve_Data     On
 
     [FILTER]
         Name             kubernetes
