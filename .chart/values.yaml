@@ -36,18 +36,17 @@ config:
 
   filters: |
     [FILTER]
-        Name       kubernetes
-        Match      kube.var.log.containers.*
-        Merge_Log  On
-        Keep_Log   Off
+        Name             kubernetes
+        Match            kube.var.log.containers.*
+        Kube_Tag_Prefix  kube.var.log.containers.
+        Merge_Log        On
+        Keep_Log         Off
 
     [FILTER]
         Name          parser
         Match         kube.var.log.containers.*
-        Key_Name      message
+        Key_Name      log
         Parser        json
-        Reserve_Data  On
-        Preserve_Key  On
 
   outputs: |
     [OUTPUT]
@@ -63,8 +62,3 @@ config:
         Index               robotshop
         Logstash_Format     On
         Logstash_Prefix     robotshop
-
-  customParsers: |
-    [PARSER]
-      Name    json
-      Format  json
