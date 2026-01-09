@@ -11,70 +11,16 @@ on:
 
   workflow_dispatch:
 
-env:
-  NAMESPACE: fluentbit
-  FLUENTBIT_HELM_CHART_URL: https://fluent.github.io/helm-charts
-  FLUENTBIT_HELM_CHART_VERSION: 0.54.0
-  CHART_PATH: ./.chart
-
 jobs:
-  validate:
-    runs-on: robot-shop-runner-azure-dev
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Setup Helm
-        uses: azure/setup-helm@v4.3.0
-        with:
-          version: 3.9.0
-
-      - name: Validate helm charts
-        run: |
-          cd ${{ env.CHART_PATH }}
-          helm lint 
-
   deploy:
-    if: ${{ github.ref_name == 'develop' }}
-    needs: validate
-    runs-on: robot-shop-runner-azure-dev
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Setup Helm
-        uses: azure/setup-helm@v4.3.0
-        with:
-          version: 3.9.0
-
-      - name: Find project namespace
-        run: |
-          if kubectl get ns ${{ env.NAMESPACE }} > /dev/null; then
-            echo "namespace=${{ env.NAMESPACE }}" >> $GITHUB_ENV
-            echo "namespace_found=true" >> $GITHUB_ENV
-          fi
-
-      - name: Create project namespace
-        if: ${{ env.namespace_found != 'true'}}
-        run: |
-          set -e
-          if kubectl create ns ${{ env.NAMESPACE }} > /dev/null; then
-            echo "Namespace ${{ env.NAMESPACE }} created."
-          else
-            echo "Namespace ${{ env.NAMESPACE }} failed to create."
-          fi
-
-      - name: Add Fluentbit helm repo
-        run: |
-          helm repo add fluent ${{ env.FLUENTBIT_HELM_CHART_URL }}
-          helm repo update
-
-      - name: Deploy Fluentbit controller
-        run: |
-          helm upgrade fluentbit \
-          fluent/fluent-bit \
-          --namespace ${{ env.NAMESPACE }} \
-          --install \
-          --version ${{ env.FLUENTBIT_HELM_CHART_VERSION }} \
-          -f ${{ env.CHART_PATH }}/values.yaml \
-          -f ${{ env.CHART_PATH }}/values/values_dev.yaml
+    uses: robot-shop-DevOps/robot-shop-github-actions/.github/workflows/helm-charts.yaml@main
+    with:
+      RELEASE_NAME: fluentbit
+      NAMESPACE: fluentbit
+      CHART_REPO_NAME: fluent
+      CHART_REPO_URL: https://fluent.github.io/helm-charts
+      CHART_NAME: fluent-bit
+      CHART_VERSION: 0.54.0
+      CHART_PATH: ./.chart
+      VALUES_FILES: ".chart/values.yaml .chart/values/values_dev.yaml"
+    secrets: inherit
