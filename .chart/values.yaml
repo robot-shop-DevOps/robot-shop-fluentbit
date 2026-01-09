@@ -19,7 +19,7 @@ env:
 config:
   service: |
     [SERVICE]
-        Flush         1
+        Flush         5
         Daemon        Off
         Log_Level     info
         Parsers_File  parsers.conf
@@ -62,4 +62,4 @@ config:
         Index               robotshop
         Logstash_Format     On
         Logstash_Prefix     robotshop
-        Retry_Limit         False
+        Retry_Limit         3
