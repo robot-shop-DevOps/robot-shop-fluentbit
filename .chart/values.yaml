@@ -62,3 +62,4 @@ config:
         Index               robotshop
         Logstash_Format     On
         Logstash_Prefix     robotshop
+        Retry_Limit         False
