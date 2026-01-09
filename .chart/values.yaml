@@ -35,13 +35,13 @@ config:
         Tag        kube.*
 
   filters: |
-    [FILTER]
-        Name             parser
-        Match            kube.*
-        Key_Name         message
-        Parser           json
-        Preserve_Key     Off
-        Reserve_Data     On
+    # [FILTER]
+    #     Name             parser
+    #     Match            kube.*
+    #     Key_Name         message
+    #     Parser           json
+    #     Preserve_Key     Off
+    #     Reserve_Data     On
 
     [FILTER]
         Name             kubernetes
